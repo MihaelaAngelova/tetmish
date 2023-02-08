@@ -4,25 +4,17 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
 from kivy.core.text import LabelBase
+from kivy.core.window import Window
+from kivy.graphics import *
+
 LabelBase.register(name='Lemonada',
                    fn_regular='Lemonada-SemiBold.ttf')
 from kivy.core.window import Window
 Window.size = (400, 650)
 
-class BackgroundImage(Image):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.source = "background_menu.jpg"
-        self.size = (Window.width, Window.height)
-        self.allow_stretch = True
-        self.keep_ratio = True
-        self.size_hint = (1, 1)
-        #self.size = (Window.width, Window.height)
-        
-class Choose_An_Account(BoxLayout):
+class ChooseAnAccountScreen(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "vertical"
@@ -30,6 +22,7 @@ class Choose_An_Account(BoxLayout):
         self.background_color = (1, 1, 1, 0)
 
         new_account_button = Button(text="Create a new account", background_color=[0, 0, 0, 0], font_name='Lemonada', font_size=20)
+        new_account_button.bind(on_press=self.create_an_account)
         back_button = Button(text="Back", background_color=[0, 0, 0, 0], font_name='Lemonada', font_size=20)
         back_button.bind(on_press=self.change_screen_menu)
         
@@ -44,18 +37,26 @@ class Choose_An_Account(BoxLayout):
         self.clear_widgets()
         self.add_widget(MenuScreen())
 
+    def create_an_account(self, instance):
+        self.add_widgets()
+        self.add_widget(CreateANewAccountScreen())
+
 class MenuScreen(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "vertical"
         self.spacing = 10 #padding
-        #self.background_image = BackgroundImage()
+
+        with self.canvas.before:
+            self.rect = Rectangle(source='background_menu.jpg', pos=self.pos, size=Window.size)
+
+
         self.background_color = (1, 1, 1, 0)  # transparent background color
-        #self.add_widget(BackgroundImage())
+        
 
         title = Label(text="Tetmish", font_name='Lemonada', size_hint=(1, 1.2), font_size=60)
         start_button = Button(text="Choose an account", background_color=[0, 0, 0, 0], font_name='Lemonada', font_size=20)
-        start_button.bind(on_press=self.change_screen_Choose_An_Account)
+        start_button.bind(on_press=self.change_screen_ChooseAnAccountScreen)
         quit_button = Button(text="Play without an account", background_color=[0, 0, 0, 0], font_name='Lemonada', font_size=20)
         
         self.add_widget(title)
@@ -66,15 +67,15 @@ class MenuScreen(BoxLayout):
         self.parent.clear_widgets()
         self.parent.add_widget(MenuScreen())
 
-    def change_screen_Choose_An_Account(self, instance):
+    def change_screen_ChooseAnAccountScreen(self, instance):
         self.clear_widgets()
-        self.add_widget(Choose_An_Account())
+        self.add_widget(ChooseAnAccountScreen())
 
     def change_screen_Create_An_Account(self, instance):
         self.clear_widgets()
-        self.add_widget(AccountCreationScreen())
+        self.add_widget(CreateANewAccountScreen())
 
-class AccountCreationScreen(BoxLayout):
+class CreateANewAccountScreen(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = "vertical"
