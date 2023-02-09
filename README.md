@@ -1,1 +1,5 @@
-I tried to develop a therapeutic Tetris (Tetmish) Windows app, designed to calm your mind and relieve the negative thoughts from that beautiful mind of yours.
+A Tetris Windows application, made with the Kivy library in Python.
+
+Details:
+
+#to be written, ihaven'tfinishedtheappyetsorry
